@@ -1,7 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { calculatorData } from '../data/translations';
-import { Calculator, Ship, DollarSign, Shield, Info, Truck } from 'lucide-react';
+import {
+  auctions,
+  auctionLocations,
+  vehicleTypes,
+  engineTypes,
+  destinationPorts,
+  calculateTotalCost,
+  parseCopartUrl,
+  calculatorLabels,
+} from '../data/calculatorConfig';
+import { 
+  Calculator, Ship, DollarSign, Shield, Info, Truck, Link2, 
+  CheckCircle, Loader2, AlertCircle, Car, Anchor
+} from 'lucide-react';
 import { Button } from '../components/ui/button';
 import {
   Select,
@@ -13,52 +25,87 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
+import { toast } from 'sonner';
 
 const USADeliveryPage = () => {
   const { t, language } = useLanguage();
+  const labels = calculatorLabels[language] || calculatorLabels.en;
+  
+  const [lotLink, setLotLink] = useState('');
+  const [isParsing, setIsParsing] = useState(false);
   const [formData, setFormData] = useState({
+    lotPrice: '',
     auction: '',
-    usPort: '',
-    destinationPort: '',
+    locationId: '',
     vehicleType: '',
-    carPrice: ''
+    engineType: '',
+    engineVolume: '',
+    year: '',
+    destinationPortId: 'klaipeda'
   });
   const [result, setResult] = useState(null);
+  const [locations, setLocations] = useState([]);
 
-  const calculateCost = () => {
-    if (!formData.auction || !formData.usPort || !formData.destinationPort || !formData.vehicleType) {
-      return;
+  // Update locations when auction changes
+  useEffect(() => {
+    if (formData.auction) {
+      setLocations(auctionLocations[formData.auction] || []);
+      setFormData(prev => ({ ...prev, locationId: '' }));
     }
+  }, [formData.auction]);
 
-    const usPort = calculatorData.usPorts.find(p => p.id === formData.usPort);
-    const destPort = calculatorData.destinationPorts.find(p => p.id === formData.destinationPort);
-    const vehicle = calculatorData.vehicleTypes.find(v => v.id === formData.vehicleType);
-    const carPrice = parseFloat(formData.carPrice) || 0;
+  // Auto-calculate when form changes
+  useEffect(() => {
+    if (formData.lotPrice && formData.auction && formData.locationId && formData.vehicleType) {
+      const calculated = calculateTotalCost({
+        lotPrice: parseFloat(formData.lotPrice) || 0,
+        auction: formData.auction,
+        locationId: formData.locationId,
+        vehicleType: formData.vehicleType,
+        destinationPortId: formData.destinationPortId
+      });
+      setResult(calculated);
+    } else {
+      setResult(null);
+    }
+  }, [formData]);
 
-    // Calculate auction fee (simplified - typically 10% of car price + fixed fees)
-    const auctionFee = carPrice > 0 ? Math.round(carPrice * 0.1 + 300) : 500;
+  // Parse auction link
+  const handleParseLink = async () => {
+    if (!lotLink.trim()) return;
     
-    // Shipping cost based on port + vehicle multiplier
-    const shippingCost = Math.round((usPort.fee + destPort.shippingCost) * vehicle.multiplier);
+    setIsParsing(true);
     
-    // Insurance (1.5% of car price or minimum $150)
-    const insurance = carPrice > 0 ? Math.max(Math.round(carPrice * 0.015), 150) : 150;
-
-    const total = auctionFee + shippingCost + insurance;
-
-    setResult({
-      auctionFee,
-      shippingCost,
-      insurance,
-      total
-    });
+    // Parse the URL
+    const parsed = parseCopartUrl(lotLink);
+    
+    if (parsed) {
+      // Simulate fetching lot data (in real app, this would call backend API)
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Set auction type
+      setFormData(prev => ({
+        ...prev,
+        auction: parsed.auction,
+      }));
+      
+      toast.success(labels.parseSuccess);
+    } else {
+      toast.error(labels.parseError);
+    }
+    
+    setIsParsing(false);
   };
+
+  const years = [];
+  for (let y = 2026; y >= 2000; y--) {
+    years.push(y);
+  }
 
   return (
     <div className="min-h-screen pt-20 lg:pt-24 pb-16">
       {/* Header Section */}
       <section className="relative bg-gradient-to-br from-slate-50 via-blue-50/50 to-white py-16 lg:py-20 overflow-hidden">
-        {/* Background Image */}
         <div className="absolute inset-0">
           <img 
             src="https://images.unsplash.com/photo-1720014836833-20d9992a510f?w=1920&q=80" 
@@ -76,7 +123,7 @@ const USADeliveryPage = () => {
               {t.usa.title}
             </h1>
             <p className="text-lg text-slate-600">
-              {t.usa.subtitle}
+              {labels.subtitle}
             </p>
           </div>
         </div>
@@ -87,152 +134,294 @@ const USADeliveryPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
             {/* Calculator Form */}
-            <Card className="border-slate-200 shadow-lg">
-              <CardHeader className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-t-lg">
-                <CardTitle className="text-white flex items-center gap-3">
-                  <Calculator className="w-6 h-6" />
-                  {t.usa.calculator.title}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-6 space-y-6">
-                {/* Auction Select */}
-                <div className="space-y-2">
-                  <Label className="text-slate-700 font-medium">{t.usa.calculator.auction}</Label>
-                  <Select
-                    value={formData.auction}
-                    onValueChange={(value) => setFormData({ ...formData, auction: value })}
-                  >
-                    <SelectTrigger className="h-12 border-slate-200 focus:border-blue-500">
-                      <SelectValue placeholder={t.usa.calculator.auction} />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {calculatorData.auctions.map((auction) => (
-                        <SelectItem key={auction.id} value={auction.id}>
-                          {auction.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {/* US Port Select */}
-                <div className="space-y-2">
-                  <Label className="text-slate-700 font-medium">{t.usa.calculator.port}</Label>
-                  <Select
-                    value={formData.usPort}
-                    onValueChange={(value) => setFormData({ ...formData, usPort: value })}
-                  >
-                    <SelectTrigger className="h-12 border-slate-200 focus:border-blue-500">
-                      <SelectValue placeholder={t.usa.calculator.port} />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {calculatorData.usPorts.map((port) => (
-                        <SelectItem key={port.id} value={port.id}>
-                          {port.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {/* Destination Port Select */}
-                <div className="space-y-2">
-                  <Label className="text-slate-700 font-medium">{t.usa.calculator.destinationPort}</Label>
-                  <Select
-                    value={formData.destinationPort}
-                    onValueChange={(value) => setFormData({ ...formData, destinationPort: value })}
-                  >
-                    <SelectTrigger className="h-12 border-slate-200 focus:border-blue-500">
-                      <SelectValue placeholder={t.usa.calculator.destinationPort} />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {calculatorData.destinationPorts.map((port) => (
-                        <SelectItem key={port.id} value={port.id}>
-                          {port.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {/* Vehicle Type Select */}
-                <div className="space-y-2">
-                  <Label className="text-slate-700 font-medium">{t.usa.calculator.vehicleType}</Label>
-                  <Select
-                    value={formData.vehicleType}
-                    onValueChange={(value) => setFormData({ ...formData, vehicleType: value })}
-                  >
-                    <SelectTrigger className="h-12 border-slate-200 focus:border-blue-500">
-                      <SelectValue placeholder={t.usa.calculator.vehicleType} />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {calculatorData.vehicleTypes.map((type) => (
-                        <SelectItem key={type.id} value={type.id}>
-                          {type.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {/* Car Price Input */}
-                <div className="space-y-2">
-                  <Label className="text-slate-700 font-medium">
-                    {language === 'ru' ? 'Цена авто ($)' : language === 'uk' ? 'Ціна авто ($)' : language === 'de' ? 'Autopreis ($)' : language === 'lt' ? 'Automobilio kaina ($)' : 'Car Price ($)'}
+            <div className="space-y-6">
+              {/* Lot Link Input */}
+              <Card className="border-blue-200 bg-blue-50/50">
+                <CardContent className="p-6">
+                  <Label className="text-slate-700 font-medium mb-3 flex items-center gap-2">
+                    <Link2 className="w-4 h-4 text-blue-600" />
+                    {labels.lotLink}
                   </Label>
-                  <div className="relative">
-                    <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                  <div className="flex gap-3">
                     <Input
-                      type="number"
-                      placeholder="10000"
-                      value={formData.carPrice}
-                      onChange={(e) => setFormData({ ...formData, carPrice: e.target.value })}
-                      className="h-12 pl-10 border-slate-200 focus:border-blue-500"
+                      value={lotLink}
+                      onChange={(e) => setLotLink(e.target.value)}
+                      placeholder={labels.lotLinkPlaceholder}
+                      className="flex-1 h-12 border-slate-200 focus:border-blue-500 bg-white"
                     />
+                    <Button
+                      onClick={handleParseLink}
+                      disabled={isParsing || !lotLink.trim()}
+                      className="h-12 px-6 bg-blue-600 hover:bg-blue-700 text-white"
+                    >
+                      {isParsing ? (
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                      ) : (
+                        labels.apply
+                      )}
+                    </Button>
                   </div>
-                </div>
+                  <p className="text-sm text-slate-500 mt-2">
+                    Copart: copart.com/lot/12345678 | IAAI: iaai.com/VehicleDetail/12345678
+                  </p>
+                </CardContent>
+              </Card>
 
-                <Button
-                  onClick={calculateCost}
-                  className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-lg font-medium shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300"
-                >
-                  {t.usa.calculator.calculate}
-                </Button>
-              </CardContent>
-            </Card>
+              {/* Main Calculator Form */}
+              <Card className="border-slate-200 shadow-lg">
+                <CardHeader className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-t-lg">
+                  <CardTitle className="text-white flex items-center gap-3">
+                    <Calculator className="w-6 h-6" />
+                    {labels.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-6 space-y-5">
+                  {/* Lot Price */}
+                  <div className="space-y-2">
+                    <Label className="text-slate-700 font-medium">{labels.lotPrice}</Label>
+                    <div className="relative">
+                      <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                      <Input
+                        type="number"
+                        placeholder="10000"
+                        value={formData.lotPrice}
+                        onChange={(e) => setFormData({ ...formData, lotPrice: e.target.value })}
+                        className="h-12 pl-10 border-slate-200 focus:border-blue-500 text-lg font-medium"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Auction */}
+                  <div className="space-y-2">
+                    <Label className="text-slate-700 font-medium">{labels.auction}</Label>
+                    <Select
+                      value={formData.auction}
+                      onValueChange={(value) => setFormData({ ...formData, auction: value })}
+                    >
+                      <SelectTrigger className="h-12 border-slate-200 focus:border-blue-500">
+                        <SelectValue placeholder={labels.selectAuction} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {auctions.map((auction) => (
+                          <SelectItem key={auction.id} value={auction.id}>
+                            {auction.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  {/* Location */}
+                  <div className="space-y-2">
+                    <Label className="text-slate-700 font-medium">{labels.location}</Label>
+                    <Select
+                      value={formData.locationId}
+                      onValueChange={(value) => setFormData({ ...formData, locationId: value })}
+                      disabled={!formData.auction}
+                    >
+                      <SelectTrigger className="h-12 border-slate-200 focus:border-blue-500">
+                        <SelectValue placeholder={labels.selectLocation} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {locations.map((loc) => (
+                          <SelectItem key={loc.id} value={loc.id}>
+                            {loc.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  {/* Vehicle Type */}
+                  <div className="space-y-2">
+                    <Label className="text-slate-700 font-medium">{labels.vehicleType}</Label>
+                    <Select
+                      value={formData.vehicleType}
+                      onValueChange={(value) => setFormData({ ...formData, vehicleType: value })}
+                    >
+                      <SelectTrigger className="h-12 border-slate-200 focus:border-blue-500">
+                        <SelectValue placeholder={labels.selectVehicle} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {vehicleTypes.map((type) => (
+                          <SelectItem key={type.id} value={type.id}>
+                            {type.name[language] || type.name.en}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  {/* Engine Type */}
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label className="text-slate-700 font-medium">{labels.engineType}</Label>
+                      <Select
+                        value={formData.engineType}
+                        onValueChange={(value) => setFormData({ ...formData, engineType: value })}
+                      >
+                        <SelectTrigger className="h-12 border-slate-200 focus:border-blue-500">
+                          <SelectValue placeholder={labels.selectEngine} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {engineTypes.map((type) => (
+                            <SelectItem key={type.id} value={type.id}>
+                              {type.name[language] || type.name.en}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="text-slate-700 font-medium">{labels.engineVolume}</Label>
+                      <Input
+                        type="number"
+                        placeholder="2000"
+                        value={formData.engineVolume}
+                        onChange={(e) => setFormData({ ...formData, engineVolume: e.target.value })}
+                        className="h-12 border-slate-200 focus:border-blue-500"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Year */}
+                  <div className="space-y-2">
+                    <Label className="text-slate-700 font-medium">{labels.year}</Label>
+                    <Select
+                      value={formData.year}
+                      onValueChange={(value) => setFormData({ ...formData, year: value })}
+                    >
+                      <SelectTrigger className="h-12 border-slate-200 focus:border-blue-500">
+                        <SelectValue placeholder="2024" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {years.map((year) => (
+                          <SelectItem key={year} value={year.toString()}>
+                            {year}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  {/* Destination Port */}
+                  <div className="space-y-2">
+                    <Label className="text-slate-700 font-medium">{labels.destinationPort}</Label>
+                    <Select
+                      value={formData.destinationPortId}
+                      onValueChange={(value) => setFormData({ ...formData, destinationPortId: value })}
+                    >
+                      <SelectTrigger className="h-12 border-slate-200 focus:border-blue-500">
+                        <SelectValue placeholder={labels.selectPort} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {destinationPorts.map((port) => (
+                          <SelectItem key={port.id} value={port.id}>
+                            {port.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
 
             {/* Results */}
             <div className="space-y-6">
               {result ? (
-                <Card className="border-blue-200 bg-gradient-to-br from-blue-50 to-white shadow-lg">
-                  <CardHeader>
+                <Card className="border-blue-200 bg-gradient-to-br from-blue-50 to-white shadow-lg sticky top-24">
+                  <CardHeader className="border-b border-blue-100">
                     <CardTitle className="text-blue-900 flex items-center gap-3">
                       <DollarSign className="w-6 h-6 text-blue-600" />
-                      {t.usa.calculator.result}
+                      {labels.results}
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="space-y-3">
-                      <div className="flex justify-between items-center p-4 bg-white rounded-xl border border-slate-100">
-                        <span className="text-slate-600">{t.usa.calculator.auctionFee}</span>
-                        <span className="font-semibold text-slate-900">${result.auctionFee.toLocaleString()}</span>
+                  <CardContent className="p-6 space-y-3">
+                    {/* Lot Price */}
+                    <div className="flex justify-between items-center p-4 bg-white rounded-xl border border-slate-100">
+                      <div className="flex items-center gap-3">
+                        <Car className="w-5 h-5 text-slate-400" />
+                        <span className="text-slate-600">{labels.lotPrice.replace(' ($)', '')}</span>
                       </div>
-                      <div className="flex justify-between items-center p-4 bg-white rounded-xl border border-slate-100">
-                        <span className="text-slate-600">{t.usa.calculator.shipping}</span>
-                        <span className="font-semibold text-slate-900">${result.shippingCost.toLocaleString()}</span>
-                      </div>
-                      <div className="flex justify-between items-center p-4 bg-white rounded-xl border border-slate-100">
-                        <span className="text-slate-600">{t.usa.calculator.insurance}</span>
-                        <span className="font-semibold text-slate-900">${result.insurance.toLocaleString()}</span>
-                      </div>
-                      <div className="flex justify-between items-center p-5 bg-blue-600 rounded-xl text-white">
-                        <span className="font-medium text-lg">{t.usa.calculator.total}</span>
-                        <span className="font-bold text-2xl">${result.total.toLocaleString()}</span>
-                      </div>
+                      <span className="font-semibold text-slate-900">${result.lotPrice.toLocaleString()}</span>
                     </div>
-                    <p className="text-sm text-slate-500 flex items-start gap-2">
+                    
+                    {/* Auction Fee */}
+                    <div className="flex justify-between items-center p-4 bg-white rounded-xl border border-slate-100">
+                      <span className="text-slate-600">{labels.auctionFee}</span>
+                      <span className="font-semibold text-slate-900">${result.auctionFee.toLocaleString()}</span>
+                    </div>
+
+                    <div className="h-px bg-slate-200 my-2" />
+                    
+                    {/* Domestic Shipping */}
+                    <div className="flex justify-between items-center p-4 bg-white rounded-xl border border-slate-100">
+                      <div className="flex items-center gap-3">
+                        <Truck className="w-5 h-5 text-slate-400" />
+                        <span className="text-slate-600">{labels.domesticShipping}</span>
+                      </div>
+                      <span className="font-semibold text-slate-900">${result.domesticShipping.toLocaleString()}</span>
+                    </div>
+
+                    {/* Port Fee */}
+                    <div className="flex justify-between items-center p-4 bg-white rounded-xl border border-slate-100">
+                      <span className="text-slate-600">{labels.portFee}</span>
+                      <span className="font-semibold text-slate-900">${result.portFee.toLocaleString()}</span>
+                    </div>
+                    
+                    {/* Ocean Shipping */}
+                    <div className="flex justify-between items-center p-4 bg-white rounded-xl border border-slate-100">
+                      <div>
+                        <div className="flex items-center gap-3">
+                          <Ship className="w-5 h-5 text-slate-400" />
+                          <span className="text-slate-600">{labels.oceanShipping}</span>
+                        </div>
+                        <p className="text-xs text-slate-400 mt-1 ml-8">
+                          {result.portName} → {result.destPortName}
+                        </p>
+                      </div>
+                      <span className="font-semibold text-slate-900">${result.oceanShipping.toLocaleString()}</span>
+                    </div>
+                    
+                    {/* Insurance */}
+                    <div className="flex justify-between items-center p-4 bg-white rounded-xl border border-slate-100">
+                      <div className="flex items-center gap-3">
+                        <Shield className="w-5 h-5 text-slate-400" />
+                        <span className="text-slate-600">{labels.insurance}</span>
+                      </div>
+                      <span className="font-semibold text-slate-900">${result.insurance.toLocaleString()}</span>
+                    </div>
+
+                    {/* Service & Documentation */}
+                    <div className="flex justify-between items-center p-4 bg-white rounded-xl border border-slate-100">
+                      <span className="text-slate-600">{labels.serviceFee} + {labels.documentation}</span>
+                      <span className="font-semibold text-slate-900">${(result.serviceFee + result.documentation).toLocaleString()}</span>
+                    </div>
+
+                    {/* Broker Fee */}
+                    <div className="flex justify-between items-center p-4 bg-white rounded-xl border border-slate-100">
+                      <span className="text-slate-600">{labels.brokerFee}</span>
+                      <span className="font-semibold text-slate-900">${result.brokerFee.toLocaleString()}</span>
+                    </div>
+
+                    <div className="h-px bg-slate-200 my-2" />
+
+                    {/* Total Delivery */}
+                    <div className="flex justify-between items-center p-4 bg-blue-100 rounded-xl">
+                      <span className="font-medium text-blue-800">{labels.totalDelivery}</span>
+                      <span className="font-bold text-blue-800 text-lg">${result.totalDelivery.toLocaleString()}</span>
+                    </div>
+                    
+                    {/* Grand Total */}
+                    <div className="flex justify-between items-center p-5 bg-blue-600 rounded-xl text-white">
+                      <span className="font-medium text-lg">{labels.total}</span>
+                      <span className="font-bold text-2xl">${result.total.toLocaleString()}</span>
+                    </div>
+                    
+                    <p className="text-sm text-slate-500 flex items-start gap-2 pt-2">
                       <Info className="w-4 h-4 mt-0.5 flex-shrink-0" />
-                      {t.usa.calculator.note}
+                      {labels.note}
                     </p>
                   </CardContent>
                 </Card>
@@ -246,7 +435,7 @@ const USADeliveryPage = () => {
                       {language === 'ru' ? 'Заполните форму' : language === 'uk' ? 'Заповніть форму' : language === 'de' ? 'Formular ausfüllen' : language === 'lt' ? 'Užpildykite formą' : 'Fill the form'}
                     </h3>
                     <p className="text-slate-500">
-                      {language === 'ru' ? 'Выберите параметры доставки' : language === 'uk' ? 'Виберіть параметри доставки' : language === 'de' ? 'Wählen Sie die Lieferparameter' : language === 'lt' ? 'Pasirinkite pristatymo parametrus' : 'Select delivery parameters'}
+                      {language === 'ru' ? 'Вставьте ссылку на лот или заполните данные вручную' : language === 'uk' ? 'Вставте посилання на лот або заповніть дані вручну' : language === 'de' ? 'Link einfügen oder manuell ausfüllen' : language === 'lt' ? 'Įklijuokite nuorodą arba užpildykite rankiniu būdu' : 'Paste lot link or fill data manually'}
                     </p>
                   </CardContent>
                 </Card>
@@ -259,7 +448,7 @@ const USADeliveryPage = () => {
                   <h4 className="font-semibold text-slate-900 mb-1">
                     {language === 'ru' ? 'Морская доставка' : language === 'uk' ? 'Морська доставка' : language === 'de' ? 'Seefracht' : language === 'lt' ? 'Jūrų transportas' : 'Ocean Shipping'}
                   </h4>
-                  <p className="text-sm text-slate-500">14-30 {language === 'ru' || language === 'uk' ? 'дней' : language === 'de' ? 'Tage' : language === 'lt' ? 'dienų' : 'days'}</p>
+                  <p className="text-sm text-slate-500">14-45 {language === 'ru' || language === 'uk' ? 'дней' : language === 'de' ? 'Tage' : language === 'lt' ? 'dienų' : 'days'}</p>
                 </div>
                 <div className="p-5 bg-white rounded-xl border border-slate-200 hover:border-blue-200 hover:shadow-md transition-all duration-300">
                   <Shield className="w-8 h-8 text-blue-600 mb-3" />
@@ -278,7 +467,7 @@ const USADeliveryPage = () => {
       <section className="py-12 bg-slate-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-slate-600 mb-4">
-            {language === 'ru' ? 'Нужна помощь? Свяжитесь с нами!' : language === 'uk' ? 'Потрібна допомога? Зв\'яжіться з нами!' : language === 'de' ? 'Brauchen Sie Hilfe? Kontaktieren Sie uns!' : language === 'lt' ? 'Reikia pagalbos? Susisiekite su mumis!' : 'Need help? Contact us!'}
+            {language === 'ru' ? 'Нужна помощь с расчётом? Свяжитесь с нами!' : language === 'uk' ? 'Потрібна допомога з розрахунком? Зв\'яжіться з нами!' : language === 'de' ? 'Brauchen Sie Hilfe? Kontaktieren Sie uns!' : language === 'lt' ? 'Reikia pagalbos? Susisiekite su mumis!' : 'Need help? Contact us!'}
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             <a href="tel:+4915158375787" className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors">
