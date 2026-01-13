@@ -128,8 +128,17 @@ const ContactsPage = () => {
       </section>
 
       {/* CTA */}
-      <section className="py-16 bg-blue-600">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <section className="py-16 bg-blue-600 relative overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <img 
+            src="https://images.unsplash.com/photo-1522674149721-b0191358dc5c?w=1920&q=80" 
+            alt="Car shipping" 
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-blue-600/85" />
+        </div>
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
             {language === 'ru' ? 'Готовы начать?' : language === 'uk' ? 'Готові почати?' : language === 'de' ? 'Bereit anzufangen?' : language === 'lt' ? 'Pasiruosė pradėti?' : 'Ready to start?'}
           </h2>
