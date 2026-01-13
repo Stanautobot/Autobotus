@@ -57,8 +57,17 @@ const USADeliveryPage = () => {
   return (
     <div className="min-h-screen pt-20 lg:pt-24 pb-16">
       {/* Header Section */}
-      <section className="bg-gradient-to-br from-slate-50 via-blue-50/50 to-white py-16 lg:py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative bg-gradient-to-br from-slate-50 via-blue-50/50 to-white py-16 lg:py-20 overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <img 
+            src="https://images.unsplash.com/photo-1720014836833-20d9992a510f?w=1920&q=80" 
+            alt="Car carrier" 
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-br from-white/95 via-blue-50/90 to-white/85" />
+        </div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-medium mb-6">
               🇺🇸 USA
