@@ -7,6 +7,12 @@ import { Button } from '../components/ui/button';
 const HomePage = () => {
   const { t } = useLanguage();
 
+  const heroImages = [
+    'https://images.unsplash.com/photo-1720014836833-20d9992a510f?w=1920&q=80',
+    'https://images.unsplash.com/photo-1522674149721-b0191358dc5c?w=1920&q=80',
+    'https://images.unsplash.com/photo-1634638021403-70f46d19fc02?w=1920&q=80',
+  ];
+
   const features = [
     {
       icon: Shield,
