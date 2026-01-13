@@ -110,8 +110,17 @@ const HomePage = () => {
       </section>
 
       {/* Services Section */}
-      <section className="py-20 lg:py-28 bg-slate-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-20 lg:py-28 bg-slate-50 relative overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <img 
+            src="https://images.unsplash.com/photo-1634638022229-5a52221886dc?w=1920&q=80" 
+            alt="Port logistics" 
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-br from-slate-50/97 via-slate-50/95 to-blue-50/90" />
+        </div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* USA Delivery Card */}
             <div className="group relative bg-white rounded-3xl p-8 lg:p-10 border border-slate-200 hover:border-blue-300 shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden">
