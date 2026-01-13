@@ -116,8 +116,17 @@ const EUDeliveryPage = () => {
       </section>
 
       {/* Transport Options */}
-      <section className="py-16 lg:py-20 bg-slate-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-16 lg:py-20 bg-slate-50 relative overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <img 
+            src="https://images.unsplash.com/photo-1549551757-8387c9126642?w=1920&q=80" 
+            alt="Car transport" 
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-br from-slate-50/97 via-slate-50/95 to-blue-50/90" />
+        </div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 text-center mb-12">
             {t.eu.transport.title}
           </h2>
