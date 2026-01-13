@@ -201,6 +201,15 @@ const HomePage = () => {
 
       {/* CTA Section */}
       <section className="py-20 lg:py-28 bg-blue-600 relative overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <img 
+            src="https://images.unsplash.com/photo-1522674149721-b0191358dc5c?w=1920&q=80" 
+            alt="Car shipping" 
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-blue-600/90" />
+        </div>
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 left-0 w-96 h-96 bg-white rounded-full blur-3xl" />
           <div className="absolute bottom-0 right-0 w-72 h-72 bg-white rounded-full blur-3xl" />
