@@ -92,10 +92,10 @@ const HomePage = () => {
             {features.map((feature, index) => (
               <div
                 key={index}
-                className="group p-6 rounded-2xl bg-slate-50 hover:bg-blue-50 border border-slate-100 hover:border-blue-200 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/5"
+                className="group p-6 rounded-2xl bg-slate-50 hover:bg-orange-50 border border-slate-100 hover:border-orange-200 transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/5"
               >
-                <div className="w-12 h-12 bg-blue-100 group-hover:bg-blue-200 rounded-xl flex items-center justify-center mb-4 transition-colors duration-300">
-                  <feature.icon className="w-6 h-6 text-blue-600" />
+                <div className="w-12 h-12 bg-orange-100 group-hover:bg-orange-200 rounded-xl flex items-center justify-center mb-4 transition-colors duration-300">
+                  <feature.icon className="w-6 h-6 text-orange-600" />
                 </div>
                 <h3 className="text-lg font-semibold text-slate-900 mb-2">
                   {feature.title[language]}
