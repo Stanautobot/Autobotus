@@ -297,7 +297,7 @@ const EUDeliveryPage = () => {
 
               {/* Contact Info */}
               <div className="mt-8 pt-8 border-t border-slate-200">
-                <div className="flex flex-wrap gap-4 justify-center">
+                <div className="flex flex-wrap gap-4 justify-center items-center">
                   <a
                     href="tel:+4915158375787"
                     className="inline-flex items-center gap-2 px-4 py-2 bg-slate-100 rounded-lg text-slate-700 hover:bg-blue-100 hover:text-blue-700 transition-colors"
@@ -320,6 +320,26 @@ const EUDeliveryPage = () => {
                     className="inline-flex items-center gap-2 px-4 py-2 bg-slate-100 rounded-lg text-slate-700 hover:bg-green-100 hover:text-green-700 transition-colors"
                   >
                     WhatsApp
+                  </a>
+                </div>
+                
+                {/* WhatsApp QR Code */}
+                <div className="mt-6 flex justify-center">
+                  <a
+                    href="https://wa.me/4915158375787"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group p-4 bg-white rounded-xl border border-slate-200 hover:border-green-300 hover:shadow-lg transition-all duration-300 flex flex-col items-center"
+                  >
+                    <div className="w-28 h-28 mb-3 rounded-lg overflow-hidden border-2 border-green-100 group-hover:border-green-300 transition-colors">
+                      <img 
+                        src="https://customer-assets.emergentagent.com/job_globalcarbuy/artifacts/7q7igm66_photo_2026-01-26%2016.03.04.jpeg" 
+                        alt="WhatsApp QR"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <p className="text-sm font-medium text-slate-700">WhatsApp Stanislav</p>
+                    <p className="text-xs text-green-600">{language === 'ru' ? 'Сканируйте QR' : language === 'uk' ? 'Скануйте QR' : 'Scan QR'}</p>
                   </a>
                 </div>
               </div>
