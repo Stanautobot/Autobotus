@@ -126,7 +126,7 @@ const HomePage = () => {
             <div className="group relative bg-white rounded-3xl p-8 lg:p-10 border border-slate-200 hover:border-blue-300 shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden">
               <div className="absolute top-0 right-0 w-40 h-40 bg-blue-50 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-700" />
               <div className="relative">
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium mb-4">
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-sm font-medium mb-4">
                   🇺🇸 USA
                 </div>
                 <h3 className="text-2xl font-bold text-slate-900 mb-3">
