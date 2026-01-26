@@ -70,13 +70,13 @@ const HomePage = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/usa-delivery">
-                <Button size="lg" className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-8 py-6 text-lg rounded-xl shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300">
+                <Button size="lg" className="w-full sm:w-auto bg-orange-500 hover:bg-orange-600 text-white px-8 py-6 text-lg rounded-xl shadow-lg shadow-orange-500/25 hover:shadow-orange-500/40 transition-all duration-300">
                   {t.hero.ctaCalculator}
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
               </Link>
               <Link to="/eu-delivery">
-                <Button size="lg" variant="outline" className="w-full sm:w-auto px-8 py-6 text-lg rounded-xl border-2 border-slate-200 hover:border-blue-300 hover:bg-blue-50 transition-all duration-300">
+                <Button size="lg" variant="outline" className="w-full sm:w-auto px-8 py-6 text-lg rounded-xl border-2 border-slate-200 hover:border-orange-300 hover:bg-orange-50 transition-all duration-300">
                   {t.hero.ctaContact}
                 </Button>
               </Link>
