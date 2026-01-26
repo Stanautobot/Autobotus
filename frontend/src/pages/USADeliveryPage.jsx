@@ -408,13 +408,13 @@ const USADeliveryPage = () => {
                     <div className="h-px bg-slate-200 my-2" />
 
                     {/* Total Delivery */}
-                    <div className="flex justify-between items-center p-4 bg-blue-100 rounded-xl">
-                      <span className="font-medium text-blue-800">{labels.totalDelivery}</span>
-                      <span className="font-bold text-blue-800 text-lg">${result.totalDelivery.toLocaleString()}</span>
+                    <div className="flex justify-between items-center p-4 bg-orange-100 rounded-xl">
+                      <span className="font-medium text-orange-800">{labels.totalDelivery}</span>
+                      <span className="font-bold text-orange-800 text-lg">${result.totalDelivery.toLocaleString()}</span>
                     </div>
                     
                     {/* Grand Total */}
-                    <div className="flex justify-between items-center p-5 bg-blue-600 rounded-xl text-white">
+                    <div className="flex justify-between items-center p-5 bg-orange-500 rounded-xl text-white">
                       <span className="font-medium text-lg">{labels.total}</span>
                       <span className="font-bold text-2xl">${result.total.toLocaleString()}</span>
                     </div>
