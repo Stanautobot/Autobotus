@@ -13,10 +13,11 @@ const Footer = () => {
           {/* Brand */}
           <div className="space-y-4">
             <Link to="/" className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex items-center justify-center">
-                <span className="text-white font-bold text-lg">A</span>
-              </div>
-              <span className="text-xl font-bold">Autobotus</span>
+              <img 
+                src="https://customer-assets.emergentagent.com/job_globalcarbuy/artifacts/frpg0r8l_Autobot%20logog.png" 
+                alt="Autobotus" 
+                className="h-12 w-auto object-contain brightness-0 invert"
+              />
             </Link>
             <p className="text-slate-400 text-sm leading-relaxed">
               {t.hero.subtitle}
