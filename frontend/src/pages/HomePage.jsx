@@ -138,21 +138,21 @@ const HomePage = () => {
                 <ul className="space-y-3 mb-8">
                   {['Copart, IAAI, Manheim', 'Copart, IAAI, Manheim'].slice(0, 1).map((item, i) => (
                     <li key={i} className="flex items-center gap-2 text-slate-700">
-                      <CheckCircle className="w-5 h-5 text-blue-500" />
+                      <CheckCircle className="w-5 h-5 text-orange-500" />
                       <span>Copart, IAAI, Manheim</span>
                     </li>
                   ))}
                   <li className="flex items-center gap-2 text-slate-700">
-                    <CheckCircle className="w-5 h-5 text-blue-500" />
+                    <CheckCircle className="w-5 h-5 text-orange-500" />
                     <span>14-30 {language === 'ru' || language === 'uk' ? 'дней' : 'days'}</span>
                   </li>
                   <li className="flex items-center gap-2 text-slate-700">
-                    <CheckCircle className="w-5 h-5 text-blue-500" />
+                    <CheckCircle className="w-5 h-5 text-orange-500" />
                     <span>{language === 'ru' ? 'Онлайн калькулятор' : language === 'uk' ? 'Онлайн калькулятор' : 'Online calculator'}</span>
                   </li>
                 </ul>
                 <Link to="/usa-delivery">
-                  <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-xl py-6">
+                  <Button className="w-full bg-orange-500 hover:bg-orange-600 text-white rounded-xl py-6">
                     {t.hero.ctaCalculator}
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
