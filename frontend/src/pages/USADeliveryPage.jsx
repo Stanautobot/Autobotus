@@ -169,7 +169,7 @@ const USADeliveryPage = () => {
 
               {/* Main Calculator Form */}
               <Card className="border-slate-200 shadow-lg">
-                <CardHeader className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-t-lg">
+                <CardHeader className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-t-lg">
                   <CardTitle className="text-white flex items-center gap-3">
                     <Calculator className="w-6 h-6" />
                     {labels.title}
