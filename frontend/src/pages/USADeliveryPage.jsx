@@ -443,15 +443,15 @@ const USADeliveryPage = () => {
 
               {/* Info Cards */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="p-5 bg-white rounded-xl border border-slate-200 hover:border-blue-200 hover:shadow-md transition-all duration-300">
-                  <Ship className="w-8 h-8 text-blue-600 mb-3" />
+                <div className="p-5 bg-white rounded-xl border border-slate-200 hover:border-orange-200 hover:shadow-md transition-all duration-300">
+                  <Ship className="w-8 h-8 text-orange-600 mb-3" />
                   <h4 className="font-semibold text-slate-900 mb-1">
                     {language === 'ru' ? 'Морская доставка' : language === 'uk' ? 'Морська доставка' : language === 'de' ? 'Seefracht' : language === 'lt' ? 'Jūrų transportas' : 'Ocean Shipping'}
                   </h4>
                   <p className="text-sm text-slate-500">14-45 {language === 'ru' || language === 'uk' ? 'дней' : language === 'de' ? 'Tage' : language === 'lt' ? 'dienų' : 'days'}</p>
                 </div>
-                <div className="p-5 bg-white rounded-xl border border-slate-200 hover:border-blue-200 hover:shadow-md transition-all duration-300">
-                  <Shield className="w-8 h-8 text-blue-600 mb-3" />
+                <div className="p-5 bg-white rounded-xl border border-slate-200 hover:border-orange-200 hover:shadow-md transition-all duration-300">
+                  <Shield className="w-8 h-8 text-orange-600 mb-3" />
                   <h4 className="font-semibold text-slate-900 mb-1">
                     {language === 'ru' ? 'Страховка' : language === 'uk' ? 'Страхування' : language === 'de' ? 'Versicherung' : language === 'lt' ? 'Draudimas' : 'Insurance'}
                   </h4>
@@ -470,7 +470,7 @@ const USADeliveryPage = () => {
             {language === 'ru' ? 'Нужна помощь с расчётом? Свяжитесь с нами!' : language === 'uk' ? 'Потрібна допомога з розрахунком? Зв\'яжіться з нами!' : language === 'de' ? 'Brauchen Sie Hilfe? Kontaktieren Sie uns!' : language === 'lt' ? 'Reikia pagalbos? Susisiekite su mumis!' : 'Need help? Contact us!'}
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
-            <a href="tel:+4915158375787" className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors">
+            <a href="tel:+4915158375787" className="inline-flex items-center gap-2 px-6 py-3 bg-orange-500 text-white rounded-xl hover:bg-orange-600 transition-colors">
               +49 151 5837 5787
             </a>
             <a href="https://t.me/autobotus" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-3 bg-slate-800 text-white rounded-xl hover:bg-slate-900 transition-colors">
