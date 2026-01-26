@@ -152,7 +152,7 @@ const USADeliveryPage = () => {
                     <Button
                       onClick={handleParseLink}
                       disabled={isParsing || !lotLink.trim()}
-                      className="h-12 px-6 bg-blue-600 hover:bg-blue-700 text-white"
+                      className="h-12 px-6 bg-orange-500 hover:bg-orange-600 text-white"
                     >
                       {isParsing ? (
                         <Loader2 className="w-5 h-5 animate-spin" />
