@@ -136,10 +136,10 @@ const USADeliveryPage = () => {
             {/* Calculator Form */}
             <div className="space-y-6">
               {/* Lot Link Input */}
-              <Card className="border-blue-200 bg-blue-50/50">
+              <Card className="border-orange-200 bg-orange-50/50">
                 <CardContent className="p-6">
                   <Label className="text-slate-700 font-medium mb-3 flex items-center gap-2">
-                    <Link2 className="w-4 h-4 text-blue-600" />
+                    <Link2 className="w-4 h-4 text-orange-600" />
                     {labels.lotLink}
                   </Label>
                   <div className="flex gap-3">
