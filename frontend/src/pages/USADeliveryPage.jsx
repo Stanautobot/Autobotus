@@ -428,8 +428,8 @@ const USADeliveryPage = () => {
               ) : (
                 <Card className="border-slate-200 bg-slate-50 shadow-sm">
                   <CardContent className="p-8 text-center">
-                    <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                      <Calculator className="w-8 h-8 text-blue-600" />
+                    <div className="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                      <Calculator className="w-8 h-8 text-orange-600" />
                     </div>
                     <h3 className="text-lg font-semibold text-slate-900 mb-2">
                       {language === 'ru' ? 'Заполните форму' : language === 'uk' ? 'Заповніть форму' : language === 'de' ? 'Formular ausfüllen' : language === 'lt' ? 'Užpildykite formą' : 'Fill the form'}
