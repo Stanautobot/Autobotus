@@ -12,11 +12,11 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           {/* Brand */}
           <div className="space-y-4">
-            <Link to="/" className="flex items-center gap-2">
+            <Link to="/" className="inline-block">
               <img 
                 src="https://customer-assets.emergentagent.com/job_globalcarbuy/artifacts/frpg0r8l_Autobot%20logog.png" 
                 alt="Autobotus" 
-                className="h-12 w-auto object-contain brightness-0 invert"
+                className="h-14 w-auto object-contain brightness-0 invert"
               />
             </Link>
             <p className="text-slate-400 text-sm leading-relaxed">
