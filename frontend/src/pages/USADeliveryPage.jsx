@@ -330,10 +330,10 @@ const USADeliveryPage = () => {
             {/* Results */}
             <div className="space-y-6">
               {result ? (
-                <Card className="border-blue-200 bg-gradient-to-br from-blue-50 to-white shadow-lg sticky top-24">
-                  <CardHeader className="border-b border-blue-100">
-                    <CardTitle className="text-blue-900 flex items-center gap-3">
-                      <DollarSign className="w-6 h-6 text-blue-600" />
+                <Card className="border-orange-200 bg-gradient-to-br from-orange-50 to-white shadow-lg sticky top-24">
+                  <CardHeader className="border-b border-orange-100">
+                    <CardTitle className="text-orange-900 flex items-center gap-3">
+                      <DollarSign className="w-6 h-6 text-orange-600" />
                       {labels.results}
                     </CardTitle>
                   </CardHeader>
