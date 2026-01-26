@@ -223,7 +223,7 @@ const HomePage = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a href="tel:+4915158375787">
-              <Button size="lg" className="w-full sm:w-auto bg-white text-blue-600 hover:bg-blue-50 px-8 py-6 text-lg rounded-xl">
+              <Button size="lg" className="w-full sm:w-auto bg-white text-orange-600 hover:bg-orange-50 px-8 py-6 text-lg rounded-xl">
                 +49 151 5837 5787
               </Button>
             </a>
