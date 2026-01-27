@@ -107,24 +107,6 @@ const ContactsPage = () => {
                 <p className="text-green-600">+49 151 5837 5787</p>
               </a>
 
-              {/* WhatsApp Stanislav */}
-              <a
-                href="https://wa.me/message/YOUR_WHATSAPP_LINK"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group p-6 bg-white rounded-2xl border border-slate-200 hover:border-green-400 hover:shadow-xl transition-all duration-300 flex flex-col items-center col-span-1 sm:col-span-3 lg:col-span-1"
-              >
-                <div className="w-32 h-32 mb-4 rounded-xl overflow-hidden border-4 border-green-100 group-hover:border-green-300 transition-colors shadow-lg">
-                  <img 
-                    src="https://customer-assets.emergentagent.com/job_globalcarbuy/artifacts/7q7igm66_photo_2026-01-26%2016.03.04.jpeg" 
-                    alt="WhatsApp QR Stanislav"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <h3 className="text-lg font-semibold text-slate-900 mb-1">WhatsApp Stanislav</h3>
-                <p className="text-green-600 text-sm">{language === 'ru' ? 'Сканируйте QR-код' : language === 'uk' ? 'Скануйте QR-код' : 'Scan QR code'}</p>
-              </a>
-
               {/* Viber */}
               <a
                 href="viber://chat?number=%2B380937197030"
