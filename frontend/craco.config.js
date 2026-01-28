@@ -1,15 +1,22 @@
 // craco.config.js
 const path = require("path");
-require("dotenv").config();
+
+// Check if dotenv is available (not needed for Vercel production builds)
+try {
+  require("dotenv").config();
+} catch (e) {
+  // dotenv not required in production
+}
 
 // Check if we're in development/preview mode (not production build)
 // Craco sets NODE_ENV=development for start, NODE_ENV=production for build
 const isDevServer = process.env.NODE_ENV !== "production";
+const isVercel = process.env.VERCEL === "1";
 
 // Environment variable overrides
 const config = {
-  enableHealthCheck: process.env.ENABLE_HEALTH_CHECK === "true",
-  enableVisualEdits: isDevServer, // Only enable during dev server
+  enableHealthCheck: process.env.ENABLE_HEALTH_CHECK === "true" && !isVercel,
+  enableVisualEdits: isDevServer && !isVercel, // Only enable during dev server, not on Vercel
 };
 
 // Conditionally load visual edits modules only in dev mode
@@ -17,8 +24,12 @@ let setupDevServer;
 let babelMetadataPlugin;
 
 if (config.enableVisualEdits) {
-  setupDevServer = require("./plugins/visual-edits/dev-server-setup");
-  babelMetadataPlugin = require("./plugins/visual-edits/babel-metadata-plugin");
+  try {
+    setupDevServer = require("./plugins/visual-edits/dev-server-setup");
+    babelMetadataPlugin = require("./plugins/visual-edits/babel-metadata-plugin");
+  } catch (e) {
+    // Plugins not available
+  }
 }
 
 // Conditionally load health check modules only if enabled
@@ -27,9 +38,13 @@ let setupHealthEndpoints;
 let healthPluginInstance;
 
 if (config.enableHealthCheck) {
-  WebpackHealthPlugin = require("./plugins/health-check/webpack-health-plugin");
-  setupHealthEndpoints = require("./plugins/health-check/health-endpoints");
-  healthPluginInstance = new WebpackHealthPlugin();
+  try {
+    WebpackHealthPlugin = require("./plugins/health-check/webpack-health-plugin");
+    setupHealthEndpoints = require("./plugins/health-check/health-endpoints");
+    healthPluginInstance = new WebpackHealthPlugin();
+  } catch (e) {
+    // Health check plugins not available
+  }
 }
 
 const webpackConfig = {
