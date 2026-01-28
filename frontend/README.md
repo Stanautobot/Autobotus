@@ -1,70 +1,74 @@
-# Getting Started with Create React App
+# Autobotus - Car Delivery Service Website
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern website for car delivery services from USA and Europe.
 
-## Available Scripts
+## 🚀 Deploy to Vercel
 
-In the project directory, you can run:
+### Option 1: One-Click Deploy
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/YOUR_USERNAME/YOUR_REPO)
 
-### `npm start`
+### Option 2: Manual Deploy
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+1. Push this code to your GitHub repository
+2. Go to [vercel.com](https://vercel.com) and sign in with GitHub
+3. Click "New Project"
+4. Import your GitHub repository
+5. Configure the project:
+   - **Framework Preset**: Create React App
+   - **Root Directory**: `frontend` (important!)
+   - **Build Command**: `yarn build`
+   - **Output Directory**: `build`
+6. Click "Deploy"
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Environment Variables (Optional)
+If you plan to add a backend later, set:
+- `REACT_APP_BACKEND_URL` - Your backend API URL
 
-### `npm test`
+## 🌐 Custom Domain (autobotus.lt)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. In Vercel dashboard, go to your project
+2. Click "Settings" → "Domains"
+3. Add your domain: `autobotus.lt`
+4. Follow Vercel's DNS configuration instructions
+5. Add these DNS records at your domain registrar:
+   - Type: `A`, Name: `@`, Value: `76.76.19.19`
+   - Type: `CNAME`, Name: `www`, Value: `cname.vercel-dns.com`
 
-### `npm run build`
+## 📦 Tech Stack
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- React 19
+- React Router DOM
+- Tailwind CSS
+- Shadcn UI Components
+- Lucide React Icons
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 🛠 Local Development
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+cd frontend
+yarn install
+yarn start
+```
 
-### `npm run eject`
+## 📁 Project Structure
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```
+frontend/
+├── src/
+│   ├── components/     # UI components
+│   ├── pages/          # Page components
+│   ├── context/        # React context (language)
+│   ├── data/           # Translations & calculator config
+│   └── App.js          # Main app
+├── public/             # Static files
+├── vercel.json         # Vercel configuration
+└── package.json
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 🌍 Features
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- 5 Languages (EN, DE, LT, RU, UK)
+- USA Delivery Calculator
+- EU Delivery Contact Form
+- Responsive Design
+- WhatsApp, Telegram, Viber integration
