@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "buildCommand": "cd frontend && yarn install && yarn build",
+  "outputDirectory": "frontend/build",
+  "framework": null,
+  "installCommand": "echo 'skip install'"
+}
