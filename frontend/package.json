@@ -2,7 +2,6 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://stanautobot.github.io/Autobotus",
   "engines": {
     "node": ">=18.0.0 <25.0.0"
   },
